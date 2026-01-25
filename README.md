@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Get It Done
 
-## Getting Started
+A web marketplace application built with modern web technologies. that will help people find healper.
 
-First, run the development server:
+## 📋 Project Status
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+This project is in its initial development phase. Here's what has been accomplished so far:
+
+### ✅ Project Initialization
+
+- **Framework Setup**: Next.js 16.1.4 with TypeScript configured
+- **Styling**: Tailwind CSS v4 integration with PostCSS configuration
+- **UI Components**:
+  - Radix UI primitives for accessible components
+  - shadcn/ui component system initialized
+  - Basic button component implemented
+- **Development Tools**:
+  - ESLint configured for code quality
+  - TypeScript strict mode enabled
+  - Modern React 19.2.3 setup
+
+### 🛠️ Tech Stack
+
+- **Frontend**: Next.js, React 19, TypeScript
+- **Styling**: Tailwind CSS v4, class-variance-authority
+- **UI Library**: Radix UI, Lucide React icons
+- **Utilities**: clsx, tailwind-merge
+- **Development**: ESLint, PostCSS
+
+### 📁 Current Project Structure
+
+```
+├── app/                    # Next.js app directory
+│   ├── globals.css        # Global styles
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Homepage
+├── components/
+│   └── ui/                # Reusable UI components
+│       └── button.tsx     # Button component
+├── lib/
+│   └── utils.ts           # Utility functions
+└── public/                # Static assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🚀 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Install dependencies**:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   npm install
+   ```
 
-## Learn More
+2. **Start development server**:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Open your browser**: Navigate to [http://localhost:3000](http://localhost:3000)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🔄 Next Steps
 
-## Deploy on Vercel
+- [ ] Define core features and requirements
+- [ ] Design user interface mockups
+- [ ] Implement task management functionality
+- [ ] Add data persistence
+- [ ] Create user authentication
+- [ ] Build responsive design
+- [ ] Add testing suite
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+_This README will be updated as the project develops with more features, documentation, and deployment instructions._
