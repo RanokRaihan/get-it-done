@@ -1,17 +1,21 @@
-import { Button } from "@/components/ui/button";
-import { Link2 } from "lucide-react";
-import Link from "next/link";
+import BecomeHelper from "@/components/landing/becomeHelper/BecomeHelper";
+import CategoryGrid from "@/components/landing/category/CategoryGrid";
+import FAQ from "@/components/landing/FAQ/FAQ";
+import Hero from "@/components/landing/hero/HeroSection";
+import HowItWorks from "@/components/landing/howItWorks/HowItWorks";
+import LiveFeed from "@/components/landing/liveFeed/LiveFeed";
+import Testimonials from "@/components/landing/testimonial/Testimonials";
 
 export default function Home() {
   return (
     <main>
-      <h1>Welcome to the Home Page</h1>
-      <p>this project is created with love by Ranok Raihan</p>
-      <Button asChild variant="default">
-        <Link className="mr-2" href="https://ranokraihan.com" target="_blank">
-          <Link2 /> Visit My Portfolio
-        </Link>
-      </Button>
+      <Hero />
+      <LiveFeed />
+      <HowItWorks />
+      <CategoryGrid />
+      <Testimonials />
+      <FAQ />
+      <BecomeHelper />
     </main>
   );
 }
