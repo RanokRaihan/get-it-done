@@ -104,10 +104,10 @@ const Hero3DSlider = () => {
     [currentIndex],
   );
 
-  // Auto-rotate slides every 5 seconds
+  // Auto-rotate slides every 7 seconds
   useEffect(() => {
     if (isPaused) return;
-    const timer = setInterval(goToNext, 5000);
+    const timer = setInterval(goToNext, 7000);
     return () => clearInterval(timer);
   }, [isPaused, goToNext]);
 
@@ -147,15 +147,6 @@ const Hero3DSlider = () => {
         className="relative w-full max-w-md md:max-w-lg h-105 md:h-115"
         style={{ perspective: "1200px" }}
       >
-        {/* Background Glow Effect */}
-        <motion.div
-          key={`glow-${currentIndex}`}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className={`absolute inset-0 bg-linear-to-br ${currentSlide.accentColor} rounded-[40px] blur-3xl opacity-20`}
-        />
-
         {/* Main Card */}
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
@@ -167,8 +158,8 @@ const Hero3DSlider = () => {
             exit="exit"
             transition={{
               type: "spring",
-              stiffness: 300,
-              damping: 30,
+              stiffness: 150,
+              damping: 25,
             }}
             className="absolute inset-0 w-full h-full"
             style={{ transformStyle: "preserve-3d" }}
