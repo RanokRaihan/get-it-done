@@ -54,6 +54,28 @@ export interface Task {
   images: string[];
 }
 
+// User info for task poster
+export interface TaskPoster {
+  id: string;
+  name: string;
+  image: string | null;
+}
+
+// Extended Task with poster info (for details page)
+export interface TaskDetails extends Task {
+  postedById: string;
+  postedBy: TaskPoster;
+}
+
+// Single Task API Response
+export interface TaskDetailsResponse {
+  success: boolean;
+  message: string;
+  statusCode: number;
+  data: TaskDetails;
+  timestamp: string;
+}
+
 // Pagination Meta
 export interface PaginationMeta {
   total: number;

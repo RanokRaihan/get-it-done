@@ -7,7 +7,7 @@ export function TaskCardSkeleton() {
       <Skeleton className="h-48 w-full rounded-none" />
 
       {/* Content skeleton */}
-      <div className="flex flex-col flex-grow p-5">
+      <div className="flex flex-col grow p-5">
         {/* Title */}
         <Skeleton className="h-6 w-4/5 mb-3" />
         <Skeleton className="h-5 w-3/5 mb-3" />
