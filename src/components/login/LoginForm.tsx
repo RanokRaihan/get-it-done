@@ -18,7 +18,7 @@ const LoginForm = () => {
     },
     onSubmit: async (values) => {
       // Handle form submission, e.g., call an API to authenticate the user
-      console.log("Form submitted with values:", values);
+      console.log("Form submitted with values:", values.value);
     },
   });
   return (
