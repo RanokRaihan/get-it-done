@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const DEFAULT_TIMEOUT = 30000;
 export const RETRY_DELAY = 1000;
@@ -7,7 +7,7 @@ export function buildUrl(
   endpoint: string,
   params?: Record<string, string | number | boolean | undefined | null>,
 ): string {
-  const url = new URL(endpoint, BASE_URL);
+  const url = new URL(`api/v1${endpoint}`, BASE_URL);
 
   if (params) {
     Object.entries(params).forEach(([key, value]) => {

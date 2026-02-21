@@ -9,10 +9,6 @@ import {
   sleep,
 } from "./utils";
 
-// ===========================================
-// Core Request Function
-// ===========================================
-
 async function request<T>(
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
   endpoint: string,
@@ -32,7 +28,7 @@ async function request<T>(
   } = config;
 
   const url = buildUrl(endpoint, params);
-
+  console.log(url);
   const buildHeaders = async (): Promise<Record<string, string>> => {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -131,6 +127,8 @@ async function request<T>(
       const { response, data } = await executeRequest(fetchOptions);
 
       if (!response.ok) {
+        console.log("test data", data);
+        console.log("trying url", url);
         const errorData = data as {
           message?: string;
           errors?: Record<string, string[]>;
