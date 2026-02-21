@@ -28,7 +28,7 @@ async function request<T>(
   } = config;
 
   const url = buildUrl(endpoint, params);
-  console.log(url);
+
   const buildHeaders = async (): Promise<Record<string, string>> => {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -127,13 +127,6 @@ async function request<T>(
       const { response, data } = await executeRequest(fetchOptions);
 
       if (!response.ok) {
-        console.log("test data", data);
-        console.log("trying url", url);
-        const errorData = data as {
-          message?: string;
-          errors?: Record<string, string[]>;
-        };
-
         // Handle 401 Unauthorized - attempt token refresh
         if (
           response.status === 401 &&
@@ -153,54 +146,62 @@ async function request<T>(
               return retryResult.data as T;
             }
 
-            const retryErrorData = retryResult.data as {
-              message?: string;
-              errors?: Record<string, string[]>;
-            };
-
-            throw new ApiError(
-              retryErrorData?.message ||
-                `Request failed with status ${retryResult.response.status}`,
-              retryResult.response.status,
-              retryErrorData?.errors,
-            );
+            // Retry after refresh still failed — throw backend error as-is
+            if (retryResult.data && typeof retryResult.data === "object") {
+              throw retryResult.data;
+            }
           }
 
-          throw new ApiError(
-            "Session expired. Please log in again.",
-            401,
-            errorData?.errors,
-          );
+          // Refresh failed — pass backend error through if available
+          if (data && typeof data === "object") {
+            throw data;
+          }
+
+          throw new ApiError("Session expired. Please log in again.", 401);
         }
 
-        const error = new ApiError(
-          errorData?.message || `Request failed with status ${response.status}`,
-          response.status,
-          errorData?.errors,
-        );
-
-        if (isRetryableError(error, response.status) && attempt < retries) {
-          lastError = error;
+        // For retryable server errors (5xx, 429), retry before giving up
+        if (isRetryableError(null, response.status) && attempt < retries) {
+          lastError = new ApiError(
+            `Request failed with status ${response.status}`,
+            response.status,
+          );
           attempt++;
           await sleep(RETRY_DELAY * attempt);
           continue;
         }
 
-        throw error;
+        // Pass backend structured error through as-is
+        if (data && typeof data === "object") {
+          throw data;
+        }
+
+        // Fallback for non-JSON error bodies
+        throw new ApiError(
+          `Request failed with status ${response.status}`,
+          response.status,
+        );
       }
 
       return data as T;
     } catch (error) {
+      // Timeout
       if (error instanceof Error && error.name === "AbortError") {
         throw new ApiError("Request timeout", 408);
       }
 
-      if (ApiError.isApiError(error)) {
-        if (error.statusCode >= 400 && error.statusCode < 500) {
-          throw error;
-        }
+      // Backend structured errors & ApiErrors — pass through directly
+      if (
+        (typeof error === "object" &&
+          error !== null &&
+          "success" in error &&
+          (error as { success: boolean }).success === false) ||
+        ApiError.isApiError(error)
+      ) {
+        throw error;
       }
 
+      // Network errors — retry if possible
       if (isRetryableError(error) && attempt < retries) {
         lastError = error instanceof Error ? error : new Error(String(error));
         attempt++;
@@ -208,10 +209,7 @@ async function request<T>(
         continue;
       }
 
-      if (ApiError.isApiError(error)) {
-        throw error;
-      }
-
+      // Unrecoverable network/unknown error
       throw new ApiError(
         error instanceof Error ? error.message : "Network error",
         0,

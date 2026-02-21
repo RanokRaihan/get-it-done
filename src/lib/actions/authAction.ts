@@ -1,6 +1,7 @@
 "use server";
 
 import { apiClient, ApiResponse } from "../api";
+import { actionHandler } from "../api/actionHandler";
 import { setTokens } from "../api/tokens";
 
 type LoginData = {
@@ -23,22 +24,19 @@ const LoginAction = async (loginData: LoginData) => {
   // ignoring "remember" for now, as token handling is done via httpOnly cookies
   const { email, password } = loginData;
   const payload = { email, password };
-  try {
-    const response: ApiResponse<LoginResponse> = await apiClient.post(
-      "/auth/login",
-      payload,
-      {
-        skipAuth: true,
-        skipRefresh: true,
-      },
-    );
-    if (response.success && response.data.accessToken) {
-      await setTokens(response.data.accessToken, response.data.refreshToken);
-    }
-    return response;
-  } catch (error) {
-    console.log("error at login action", error);
+  const result = await actionHandler(() =>
+    apiClient.post<ApiResponse<LoginResponse>>("/auth/login", payload, {
+      skipAuth: true,
+      skipRefresh: true,
+    }),
+  );
+
+  // Set tokens on success
+  if (result.success && "data" in result && result.data.accessToken) {
+    await setTokens(result.data.accessToken, result.data.refreshToken);
   }
+
+  return result;
 };
 
 export { LoginAction };

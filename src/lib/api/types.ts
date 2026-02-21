@@ -9,7 +9,13 @@ export interface ApiResponse<T> {
   data: T;
   timestamp?: string;
 }
-
+export type BackendError = {
+  success: false;
+  message: string;
+  statusCode: number;
+  errorType?: string;
+  errorSources?: Array<{ path: string; message: string }>;
+};
 export interface PaginatedResponse<T> extends ApiResponse<T[]> {
   meta: {
     total: number;
